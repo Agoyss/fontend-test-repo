@@ -1,4 +1,4 @@
-# Frontend Test — Sharing Vision (Dashboard)
+# Frontend Test — (Dashboard)
 
 Dashboard artikel berbasis **Go + Gin + MySQL** untuk memenuhi
 *Test Frontend*. Proyek ini **berdiri sendiri**
