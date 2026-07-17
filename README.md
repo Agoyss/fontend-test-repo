@@ -42,7 +42,7 @@ frontend-test/
 │   ├── index.html               # Dashboard (Tailwind via CDN)
 │   └── app.js                   # Logika frontend (fetch API)
 ├── go.mod
-└── .env
+├── .env
 └── README.md
 ```
 
