@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard CRUD Article</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-800">
+  <header class="flex items-center justify-between bg-white px-6 py-3 border-b border-slate-200">
+    <h1 class="text-lg font-bold">Dashboard</h1>
+    <nav class="flex gap-2">
+      <button class="nav-btn px-3 py-1.5 rounded border border-slate-200 bg-blue-600 text-white" data-view="posts">All Posts</button>
+      <button class="nav-btn px-3 py-1.5 rounded border border-slate-200 bg-white" data-view="add">Add New</button>
+      <button class="nav-btn px-3 py-1.5 rounded border border-slate-200 bg-white" data-view="preview">Preview</button>
+    </nav>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6">
+    <!-- ============ ALL POSTS ============ -->
+    <section id="view-posts" class="view">
+      <div class="tabs flex gap-2 mb-4">
+        <button class="tab px-3 py-1.5 rounded border border-slate-200 bg-blue-600 text-white" data-status="publish">Published</button>
+        <button class="tab px-3 py-1.5 rounded border border-slate-200 bg-white" data-status="draft">Drafts</button>
+        <button class="tab px-3 py-1.5 rounded border border-slate-200 bg-white" data-status="thrash">Trashed</button>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+        <table class="w-full text-base table-fixed">
+          <thead class="bg-slate-50 text-sm uppercase tracking-wide text-slate-500 border-b border-slate-200">
+            <tr>
+              <th class="text-left font-semibold p-4">Title</th>
+              <th class="text-left font-semibold p-4 w-48">Category</th>
+              <th class="text-left font-semibold p-4 w-40">Action</th>
+            </tr>
+          </thead>
+          <tbody id="posts-body" class="divide-y divide-slate-100 text-base">
+            <tr><td colspan="3" class="p-8 text-center text-slate-400">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pager flex items-center justify-center gap-3 mt-4">
+        <button id="posts-prev" class="px-4 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled>Previous</button>
+        <span id="posts-page-info" class="text-sm text-slate-400">Page 1</span>
+        <button id="posts-next" class="px-4 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled>Next</button>
+      </div>
+    </section>
+
+    <!-- ============ ADD NEW ============ -->
+    <section id="view-add" class="view hidden">
+      <h2 class="text-xl font-semibold mb-4">Add New Article</h2>
+      <form id="add-form" class="bg-white p-5 border border-slate-200 rounded space-y-4">
+        <label class="block text-sm font-semibold">Title
+          <input name="title" required class="mt-1 w-full p-2 border border-slate-300 rounded" />
+        </label>
+        <label class="block text-sm font-semibold">Content
+          <textarea name="content" rows="6" required class="mt-1 w-full p-2 border border-slate-300 rounded"></textarea>
+        </label>
+        <label class="block text-sm font-semibold">Category
+          <input name="category" required class="mt-1 w-full p-2 border border-slate-300 rounded" />
+        </label>
+        <div class="flex gap-2">
+          <button type="button" class="btn-primary px-4 py-2 rounded bg-blue-600 text-white" data-action="publish">Publish</button>
+          <button type="button" class="px-4 py-2 rounded border border-slate-300 bg-white" data-action="draft">Draft</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ EDIT ============ -->
+    <section id="view-edit" class="view hidden">
+      <h2 class="text-xl font-semibold mb-4">Edit Article</h2>
+      <form id="edit-form" class="bg-white p-5 border border-slate-200 rounded space-y-4">
+        <input type="hidden" name="id" />
+        <label class="block text-sm font-semibold">Title
+          <input name="title" required class="mt-1 w-full p-2 border border-slate-300 rounded" />
+        </label>
+        <label class="block text-sm font-semibold">Content
+          <textarea name="content" rows="6" required class="mt-1 w-full p-2 border border-slate-300 rounded"></textarea>
+        </label>
+        <label class="block text-sm font-semibold">Category
+          <input name="category" required class="mt-1 w-full p-2 border border-slate-300 rounded" />
+        </label>
+        <div class="flex gap-2">
+          <button type="button" class="btn-primary px-4 py-2 rounded bg-blue-600 text-white" data-action="publish">Publish</button>
+          <button type="button" class="px-4 py-2 rounded border border-slate-300 bg-white" data-action="draft">Draft</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ PREVIEW ============ -->
+    <section id="view-preview" class="view hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Preview (Published)</h2>
+        <span id="page-info" class="text-sm text-slate-400">Page 1</span>
+      </div>
+      <div id="preview-list" class="space-y-4"></div>
+      <div class="pager flex items-center justify-center gap-3 mt-6">
+        <button id="prev-page" class="px-4 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled>Previous</button>
+        <button id="next-page" class="px-4 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled>Next</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all duration-300 opacity-0 -translate-y-4">
+    <span id="toast-icon" class="text-lg leading-none"></span>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

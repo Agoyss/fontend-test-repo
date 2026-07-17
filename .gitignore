@@ -1,0 +1,6 @@
+# Local environment config (contains secrets) — do NOT commit
+.env
+
+# Go build artifacts
+/frontend-test
+*.exe
